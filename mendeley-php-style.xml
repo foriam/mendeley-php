@@ -1,0 +1,156 @@
+<!-- Part of mendeley-php -->
+<!-- Can be imported to the mendeley-desktop application as citation style -->
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="sort-only" page-range-format="expanded" default-locale="en-US">
+    <info>
+        <title>HTML markup with inline DOI link - php bib</title>
+        <title-short>HTML-DOI</title-short>
+        <id>http://csl.mendeley.com/styles/1064521/HMTL-inline-DOI-link-php-bib</id>
+        <author>
+            <name>Rene Hoffmann</name>
+            <email>foriamhuman@gmail.com</email>
+        </author>
+        <contributor>
+            <name>René Hoffmann</name>
+            <email>foriamhuman@gmail.com</email>
+        </contributor>
+        <contributor>
+            <name>Sebastian Karcher</name>
+        </contributor>
+        <contributor>
+            <name>Ivan Bushmarinov</name>
+            <email>ib@ineos.ac.ru</email>
+        </contributor>
+        <contributor>
+            <email>julian.onions@gmail.com</email>
+            <name>Julian Onions</name>
+        </contributor>
+        <updated>2015-09-13T15:02:30+00:00</updated>
+        <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
+    </info>
+    <macro name="editor">
+        <names variable="editor">
+            <name sort-separator=", " initialize-with=". " name-as-sort-order="all" delimiter="; " delimiter-precedes-last="always"/>
+            <label form="short" prefix=", " text-case="capitalize-first"/>
+        </names>
+    </macro>
+    <macro name="author">
+        <names variable="author" suffix=".">
+            <name sort-separator=", " initialize-with=". " name-as-sort-order="all" delimiter="; " delimiter-precedes-last="always"/>
+            <label form="short" prefix=", " text-case="capitalize-first"/>
+        </names>
+    </macro>
+    <macro name="publisher">
+        <group delimiter=": ">
+            <choose>
+                <if match="any" variable="container-title">
+                    <text variable="container-title" form="short"/>
+                </if>
+                <else>
+                    <text variable="publisher" form="short"/>
+                    <text variable="publisher-place" form="short"/>
+                </else>
+            </choose>
+        </group>
+    </macro>
+    <macro name="title">
+        <choose>
+            <if type="bill book graphic legal_case legislation motion_picture report song" match="any">
+                <text variable="title" font-style="italic"/>
+            </if>
+            <else>
+                <text variable="title"/>
+            </else>
+        </choose>
+    </macro>
+    <macro name="volume">
+        <group delimiter=" ">
+            <text term="volume" form="short" text-case="capitalize-first"/>
+            <text variable="volume"/>
+        </group>
+    </macro>
+    <macro name="series">
+        <text variable="collection-title"/>
+    </macro>
+    <macro name="pages">
+        <label variable="page" form="short" suffix=" "/>
+        <text variable="page"/>
+    </macro>
+    <macro name="book-container">
+        <group delimiter=" ">
+            <text macro="title" suffix="."/>
+            <text term="in" text-case="capitalize-first"/>
+            <text variable="container-title" font-style="italic"/>
+        </group>
+    </macro>
+    <macro name="issued">
+        <date variable="issued" delimiter=" ">
+            <date-part name="year"/>
+        </date>
+    </macro>
+    <macro name="full-issued">
+        <date variable="issued" delimiter=" ">
+            <date-part name="month" form="long" suffix=" "/>
+            <date-part name="day" suffix=", "/>
+            <date-part name="year"/>
+        </date>
+    </macro>
+    <macro name="edition">
+        <choose>
+            <if is-numeric="edition">
+                <group delimiter=" ">
+                    <number variable="edition" form="ordinal"/>
+                    <text term="edition" form="short"/>
+                </group>
+            </if>
+            <else>
+                <text variable="edition" suffix="."/>
+            </else>
+        </choose>
+    </macro>
+    <citation collapse="citation-number">
+        <layout delimiter="," vertical-align="sup">
+            <text variable="citation-label"/>
+        </layout>
+    </citation>
+    <bibliography et-al-min="11" et-al-use-first="10" second-field-align="flush" entry-spacing="0">
+        <layout>
+            <group prefix="&lt;span class=&quot;ref-inline&quot;&gt;" suffix="&lt;/span&gt;">
+                <text variable="citation-label" prefix="&lt;?php if (!array_key_exists($references, '" suffix="')) {"/>
+                <text variable="citation-label" prefix=" $references['" suffix="'] = new Reference("/>
+                <text value=" " suffix="'"/>
+                <text macro="title"/>
+                <text value=", " prefix="'" suffix="'"/>
+                <text macro="author"/>
+                <text value=", " prefix="'" suffix="'"/>
+                <text macro="publisher"/>
+                <text value=", " prefix="'" suffix="'"/>
+                <text macro="issued"/>
+                <text value=", " prefix="'" suffix="'"/>
+                <text macro="volume"/>
+                <text value=", " prefix="'" suffix="'"/>
+                <text macro="pages"/>
+                <text value=", " prefix="'" suffix="'"/>
+                <choose>
+                    <if match="any" variable="DOI">
+                        <text variable="DOI" prefix="https://dx.doi.org/"/>
+                    </if>
+                    <else-if match="any" variable="URL">
+                        <text variable="URL"/>
+                    </else-if>
+                </choose>
+                <text value="); } ?&gt;" prefix="'"/>
+                <text variable="citation-label" prefix="&lt;a class=&quot;ref-inline-pageLink&quot; href=&quot;#" suffix="&quot;&gt;&lt;?php echo (1 + array_search('"/>
+                <text variable="citation-label" suffix="', array_keys($references))); ?&gt;&lt;/a&gt;"/>
+                <choose>
+                    <if match="all" variable="DOI">
+                        <text variable="DOI" prefix="&lt;a class=&quot;ref-inline-DOILink&quot; target=&quot;_blank&quot; href=&quot;https://dx.doi.org/" suffix="&quot;&gt;&lt;/a&gt;"/>
+                    </if>
+                    <else-if match="any" variable="URL">
+                        <text variable="URL" prefix="&lt;a class=&quot;ref-inline-DOILink&quot; target=&quot;_blank&quot; href=&quot;" suffix="&quot;&gt;&lt;/a&gt;"/>
+                    </else-if>
+                </choose>
+            </group>
+        </layout>
+    </bibliography>
+</style>
